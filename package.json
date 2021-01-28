@@ -1,0 +1,34 @@
+{
+  "name": "discord-economy",
+  "version": "0.0.1",
+  "description": "Discord bot for cross-server virtual currency",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maticzpl/discord-economy.git"
+  },
+  "keywords": [
+    "economy",
+    "currency",
+    "discord",
+    "bot",
+    "digital"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Maticzpl/discord-economy/issues"
+  },
+  "homepage": "https://github.com/Maticzpl/discord-economy#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "discord.js": "^12.5.1",
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.22"
+  }
+}
