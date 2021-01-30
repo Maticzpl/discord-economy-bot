@@ -104,5 +104,7 @@ dist
 .tern-port
 
 #compiled js file
-main.js
+src/*.js
+
+#config
 config.json
