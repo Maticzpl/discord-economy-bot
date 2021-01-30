@@ -7,6 +7,13 @@ echo.
 
 CALL node .
 
-del src/main.js
-del src/storage.js
+cd src
+
+del main.js
+del storage.js
+
+cd commands
+del cmd-base.js
+del cmd-manager.js
+del help.js
 pause

@@ -12,9 +12,8 @@ export interface StorageInterface{
     readonly storage_map: object;
 }
 
-
 // JSON STORAGE
-export class JsonStorage implements StorageInterface{    
+class JsonStorage implements StorageInterface{    
 
     source = "./storage.json";
     storage_map = {
@@ -73,3 +72,6 @@ export class JsonStorage implements StorageInterface{
     }
 
 }
+
+
+export const DefaultStorage = JsonStorage;

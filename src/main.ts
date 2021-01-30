@@ -1,28 +1,34 @@
+//Dependencies
 import * as Discord from "discord.js";
 import * as Chalk from "chalk";
+
+//Local
 import * as Storage from "./storage";
+import { CommandManager } from "./commands/cmd-manager";
+import { CommandDataIn } from "./commands/cmd-base";
 const {token,prefix} = require("./config.json"); //importing json files in typescript is weird
 
-
+//globals
 const client = new Discord.Client();
-const storage = new Storage.JsonStorage();
+const storage = new Storage.DefaultStorage();
+const cmd_manager = new CommandManager();
+
 
 
 
 client.on("ready",()=>{
-    storage.setData("test","hello there");
-    console.log(Chalk.green("Bot Started"));
+    console.log(Chalk.green("Bot Started"));    
 });
 
 client.on("message",(message)=>{
     if (!message.content.startsWith(`${prefix}`))
-        return;
-    
-    let params = message.content.split(" ");
+        return;        
+        
+    const cmd_data = new CommandDataIn(
+        client,storage,message
+    );
 
-    if (params[0] == `${prefix}ping`) {
-        message.channel.send("pnog");
-    }    
+    cmd_manager.checkCommand(cmd_data);
 });
 
 

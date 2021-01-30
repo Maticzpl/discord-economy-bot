@@ -3,7 +3,8 @@
       "skipLibCheck": true,
       "module": "commonjs",
       "strict": true,
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "strictPropertyInitialization":false
     },
     "include": ["src/*"]
 }
