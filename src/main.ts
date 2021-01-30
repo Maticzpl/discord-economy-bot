@@ -16,11 +16,11 @@ const cmd_manager = new CommandManager();
 
 
 
-client.on("ready",()=>{
+client.on("ready",async ()=>{
     console.log(Chalk.green("Bot Started"));    
 });
 
-client.on("message",(message)=>{
+client.on("message",async (message)=>{
     if (!message.content.startsWith(`${prefix}`))
         return;        
         
@@ -30,6 +30,5 @@ client.on("message",(message)=>{
 
     cmd_manager.checkCommand(cmd_data);
 });
-
 
 client.login(token);

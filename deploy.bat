@@ -15,5 +15,7 @@ del storage.js
 cd commands
 del cmd-base.js
 del cmd-manager.js
+
 del help.js
+del account.js
 pause

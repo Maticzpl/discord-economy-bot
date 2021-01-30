@@ -1,6 +1,4 @@
 import * as fs from "fs";
-import { resolve } from "path";
-import { createModuleResolutionCache } from "typescript";
 
 
 export interface StorageInterface{
@@ -17,8 +15,7 @@ class JsonStorage implements StorageInterface{
 
     source = "./storage.json";
     storage_map = {
-        test:"test",
-        best:"best",
+        
     };
     
     getData(field :string){
@@ -31,18 +28,30 @@ class JsonStorage implements StorageInterface{
                 obj = JSON.parse(data);
                 
                 //Parse map path
+                let original = map[field];
+                let target = original;
                 
-                let target = map[field].split(".");
-    
-                let current_pos = obj;
-                for (let i = 0; i < target.length; i++) {
-                    const path_part = target[i];                
-                
-                    current_pos = current_pos[path_part];
+                if (target == undefined) {
+                    target = field;
+                }
+                else{
+                    target = target.split(".");    
                 }
     
-                
-                resolve(current_pos);
+                if (target.includes(".")) {
+                    let current_pos = obj;
+                    for (let i = 0; i < target.length; i++) {
+                        const path_part = target[i];                
+                        if (current_pos == undefined) {
+                            resolve(current_pos);
+                            break;
+                        }
+                        current_pos = current_pos[path_part];
+                    }   
+                    resolve(current_pos);
+                }
+                else
+                    resolve(obj[target]);
             });  
         });
     }
@@ -50,17 +59,25 @@ class JsonStorage implements StorageInterface{
     setData(field :string, data_ :any){ 
         let obj;   
         let src = this.source;
+        let map = this.storage_map;
         return new Promise((resolve,reject)=>{
             fs.readFile(this.source, 'utf8', function (err, data) {
                 if (err) console.error(err);
                 obj = JSON.parse(data);
                 
-                if (field == "")
+                let target = map[field];
+                if (target == undefined) {
+                    target = field;
+                }
+                
+                if (target == "")
                     obj = data_;
                 else
-                    eval(`obj.${field} = data_;`);   
+                {
+                    eval(`obj.${target} = data_;`);   
+                }
                 // qwq, had to use eval
-                //Rememebr to sanitize field
+                //Rememebr to sanitize target
                 
                 fs.writeFile(src,JSON.stringify(obj),(err)=>{
                     console.error(err);

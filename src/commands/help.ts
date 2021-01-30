@@ -4,8 +4,6 @@ import {Command,CommandDataIn,CommandList} from "./cmd-base";
 const {prefix} = require("../config.json");
 
 
-export namespace Commands{
-
     export class Help implements Command{
         name = "help";
         description = "Lists all the commands";
@@ -21,8 +19,9 @@ export namespace Commands{
                 if(cmd){
                     let aliasString = "";
                     cmd.aliases.forEach(alias => {
-                        aliasString += alias;
+                        aliasString += `${alias},`;
                     });
+                    aliasString = aliasString.slice(0,aliasString.length-1);
 
                     let embed = new Discord.MessageEmbed()
                     .setTitle(cmd.name.toUpperCase())
@@ -49,4 +48,3 @@ export namespace Commands{
         }
     }      
 
-}

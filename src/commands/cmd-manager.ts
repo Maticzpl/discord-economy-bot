@@ -1,11 +1,13 @@
 import {Command,CommandDataIn,CommandList} from "./cmd-base";
 
-import {Commands} from "./help";
+import {Help} from "./help" ;
+import {Account} from "./account";
 
 
 export class CommandManager{
     constructor(){
-        CommandList.push(new Commands.Help);
+        CommandList.push(new Help);
+        CommandList.push(new Account);
     }
     
     checkCommand(data: CommandDataIn){
