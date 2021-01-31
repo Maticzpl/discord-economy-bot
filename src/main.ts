@@ -27,8 +27,12 @@ client.on("message",async (message)=>{
     const cmd_data = new CommandDataIn(
         client,storage,message
     );
-
+    console.log(await storage.getData("users.matic.points"));
+    
+    //await storage.setData("users.smv.points.more",30);
     cmd_manager.checkCommand(cmd_data);
+
+    
 });
 
 client.login(token);

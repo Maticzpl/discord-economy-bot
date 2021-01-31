@@ -3,34 +3,24 @@ import {Command,CommandDataIn,CommandList} from "./cmd-base";
 import {Help} from "./help" ;
 import {Account} from "./account";
 
-
 export class CommandManager{
     constructor(){
         CommandList.push(new Help);
         CommandList.push(new Account);
     }
     
-    checkCommand(data: CommandDataIn){
-        CommandList.forEach((cmd)=>{
-            let name = data.Message.content.split(' ')[0].slice(1);
+    checkCommand(data: CommandDataIn){        
+        let cmd_name = data.Message.content.split(" ")[0].slice(1); //slice off prefix
 
-            let nameMatch = false;
-            if(cmd.name == name)
-                nameMatch = true;
-            else
-            {
-                cmd.aliases.forEach((alias)=>{
-                    if (alias == name) {
-                        nameMatch = true;
-                    }
-                });
-            }
+        let cmd = CommandList.find(command => 
+            command.name == cmd_name
+            ||
+            command.aliases.includes(cmd_name)
+        );
+               
+        if(cmd)
+            cmd.execute(data);
 
-            if (nameMatch) {
-                cmd.execute(data);
-                return;
-            }
-
-        });
+        return;          
     }
 }

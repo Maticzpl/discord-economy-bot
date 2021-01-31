@@ -3,8 +3,8 @@ import * as fs from "fs";
 
 export interface StorageInterface{
 
-    getData(field :string           )   :Promise<any>;
-    setData(field :string,data :any )   :Promise<any>;    
+    getData(target :string           )   :Promise<any>;
+    setData(target :string,data :any )   :Promise<any>;    
     
     readonly source: string;
     readonly storage_map: object;
@@ -18,71 +18,63 @@ class JsonStorage implements StorageInterface{
         
     };
     
-    getData(field :string){
-        let out = undefined;
-        let obj;
-        let map = this.storage_map;
+    getData(target :string){ 
+
+        let obj : {[index: string]:string};   
+        let src = this.source! as string;
+        let map = this.storage_map! as {[index:string]:any};
+
         return new Promise((resolve,reject)=>{
             fs.readFile(this.source, 'utf8', function (err, data) {
                 if (err) console.error(err);
                 obj = JSON.parse(data);
                 
-                //Parse map path
-                let original = map[field];
-                let target = original;
-                
-                if (target == undefined) {
-                    target = field;
-                }
-                else{
-                    target = target.split(".");    
-                }
-    
-                if (target.includes(".")) {
-                    let current_pos = obj;
-                    for (let i = 0; i < target.length; i++) {
-                        const path_part = target[i];                
-                        if (current_pos == undefined) {
-                            resolve(current_pos);
-                            break;
-                        }
-                        current_pos = current_pos[path_part];
-                    }   
-                    resolve(current_pos);
-                }
+                let path;
+                if (map[target])                     
+                    path = map[target].split('.') as string[];
                 else
-                    resolve(obj[target]);
+                    path = target.split('.') as string[];
+                  
+                let previous : any;
+                path.forEach(part=>{
+                    if (!previous)
+                        previous = obj[part];
+                    else
+                        previous = previous[part];                    
+                });
+                
+                resolve(previous);
             });  
         });
     }
 
-    setData(field :string, data_ :any){ 
-        let obj;   
-        let src = this.source;
-        let map = this.storage_map;
+    setData(target :string, data_ :any){ 
+        let obj : {[index: string]:string};   
+        let src = this.source! as string;
+        let map = this.storage_map! as {[index:string]:any};
         return new Promise((resolve,reject)=>{
             fs.readFile(this.source, 'utf8', function (err, data) {
                 if (err) console.error(err);
                 obj = JSON.parse(data);
                 
-                let target = map[field];
-                if (target == undefined) {
-                    target = field;
-                }
-                
-                if (target == "")
-                    obj = data_;
+                let path;
+                if (map[target])                     
+                    path = map[target].split('.');
                 else
-                {
-                    eval(`obj.${target} = data_;`);   
-                }
-                // qwq, had to use eval
-                //Rememebr to sanitize target
-                
-                fs.writeFile(src,JSON.stringify(obj),(err)=>{
-                    console.error(err);
+                    path = target.split('.');
+                         
+                path.reduce((a, b, i, arr) => (i == arr.length-1) ? a[b] = data_ : (a[b] ?? (a[b] = {})), obj)
+
+                let stringify = JSON.stringify(obj);
+                fs.writeFile(src,stringify,(err)=>{
+                    if(err) 
+                        console.error(err);
+                    else 
+                        resolve("success");
                 });
-                resolve(undefined);
+
+                
+                resolve("an error occured")
             });
         });
         
