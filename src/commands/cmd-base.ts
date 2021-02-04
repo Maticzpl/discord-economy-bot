@@ -5,16 +5,13 @@ import * as Storage from "../storage";
 export class CommandDataIn {
     constructor(
          client :Discord.Client,
-         storage :Storage.StorageInterface,
          message :Discord.Message
         ){
         this.DiscordClient = client;
-        this.Storage = storage;
         this.Message = message;
     }
 
     DiscordClient: Discord.Client;
-    Storage: Storage.StorageInterface;
     Message: Discord.Message;
 }
 

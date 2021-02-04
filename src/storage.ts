@@ -13,7 +13,7 @@ export interface StorageInterface{
 // JSON STORAGE
 class JsonStorage implements StorageInterface{    
 
-    source = "./storage.json";
+    source = "../storage.json";
     storage_map = {
         
     };
@@ -83,4 +83,4 @@ class JsonStorage implements StorageInterface{
 }
 
 
-export const DefaultStorage = JsonStorage;
+export const DefaultStorage = JsonStorage; //btw all storages classes behave like they are "Static" cause we have just one file to write and read from :P

@@ -3,14 +3,14 @@ import * as Discord from "discord.js";
 import * as Chalk from "chalk";
 
 //Local
-import * as Storage from "./storage";
+import * as MoneyLogic from "./money-system-logic";
 import { CommandManager } from "./commands/cmd-manager";
 import { CommandDataIn } from "./commands/cmd-base";
-const {token,prefix} = require("./config.json"); //importing json files in typescript is weird
+
+import {token,prefix} from "./config.json"; //importing json files in typescript is weird
 
 //globals
 const client = new Discord.Client();
-const storage = new Storage.DefaultStorage();
 const cmd_manager = new CommandManager();
 
 
@@ -21,18 +21,16 @@ client.on("ready",async ()=>{
 });
 
 client.on("message",async (message)=>{
-    if (!message.content.startsWith(`${prefix}`))
-        return;        
+    if (!message.content.startsWith(`${prefix}`)){  
+    }
+    else{
+        //execute command if it exists
+        const cmd_data = new CommandDataIn(
+            client,message
+        );
+        cmd_manager.checkCommand(cmd_data);    
+    }
         
-    const cmd_data = new CommandDataIn(
-        client,storage,message
-    );
-    console.log(await storage.getData("users.matic.points"));
-    
-    //await storage.setData("users.smv.points.more",30);
-    cmd_manager.checkCommand(cmd_data);
-
-    
 });
 
 client.login(token);

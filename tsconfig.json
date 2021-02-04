@@ -2,9 +2,10 @@
     "compilerOptions": {
       "skipLibCheck": true,
       "module": "commonjs",
-      "strict": true,
+      "target": "ES2020",
+      "strict": false,
       "resolveJsonModule": true,
-      "strictPropertyInitialization":false
+      "outDir": "out"
     },
     "include": ["src/*"]
 }
